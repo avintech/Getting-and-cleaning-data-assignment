@@ -16,21 +16,22 @@ if (!file.exists("UCI HAR Dataset")) {
 feat <- read.table("UCI HAR Dataset/features.txt", col.names = c("n","functions"))
 acti <- read.table("UCI HAR Dataset/activity_labels.txt", col.names = c("code", "activity"))
 s_test <- read.table("UCI HAR Dataset/test/subject_test.txt", col.names = "subject")
-x_test <- read.table("UCI HAR Dataset/test/X_test.txt", col.names = features$functions)
+x_test <- read.table("UCI HAR Dataset/test/X_test.txt", col.names = feat$functions)
 y_test <- read.table("UCI HAR Dataset/test/y_test.txt", col.names = "code")
 s_train <- read.table("UCI HAR Dataset/train/subject_train.txt", col.names = "subject")
-x_train <- read.table("UCI HAR Dataset/train/X_train.txt", col.names = features$functions)
+x_train <- read.table("UCI HAR Dataset/train/X_train.txt", col.names = feat$functions)
 y_train <- read.table("UCI HAR Dataset/train/y_train.txt", col.names = "code")
 
 X <- rbind(x_train, x_test)
 Y <- rbind(y_train, y_test)
 S <- rbind(s_train, s_test)
 d_f <- cbind(S, Y, X)
+
 # Extracts only the measurements on the mean and standard deviation for each measurement. 
 d_f2 <- d_f %>% select(subject, code, contains("mean"), contains("std"))
 
 # Uses descriptive activity names to name the activities in the data set
-d_f2$code <- activities[d_f2$code,2]
+d_f2$code <- acti[d_f2$code,2]
 
 # Appropriately labels the data set with descriptive variable names. 
 names(d_f2)[2] = "activity"
